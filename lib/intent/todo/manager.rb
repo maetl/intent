@@ -12,14 +12,14 @@ module Intent
               puts task
             end
           when :focus
+            focused_list = list
+
             unless args[1].nil?
               case args[1][0]
               when '@'
                 focused_list = list.by_context(args[1])
               when '+'
                 focused_list = list.by_project(args[1])
-              else
-                focused_list = list.by_context(args[1]).by_project(args[1])
               end
             end
 
@@ -27,7 +27,11 @@ module Intent
             if prioritised_list.any?
               puts prioritised_list.by_not_done.sample
             else
-              puts focused_list.by_not_done.sample
+              if focused_list.any?
+                puts focused_list.by_not_done.sample
+              else
+                puts "No tasks found."
+              end
             end
           end
         end
