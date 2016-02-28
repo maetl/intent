@@ -8,27 +8,38 @@ module Intent
           list = ::Todo::List.new(ENV['TODO_TXT'])
           case args.first.to_sym
           when :list
-            list.each do |task|
-              puts task
-            end
-          when :focus
-            focused_list = list
+            filtered_list = list.by_not_done
 
             unless args[1].nil?
               case args[1][0]
               when '@'
-                focused_list = list.by_context(args[1])
+                filtered_list = filtered_list.by_context(args[1])
               when '+'
-                focused_list = list.by_project(args[1])
+                filtered_list = filtered_list.by_project(args[1])
+              end
+            end
+
+            filtered_list.each do |task|
+              puts task
+            end
+          when :focus
+            focused_list = list.by_not_done
+
+            unless args[1].nil?
+              case args[1][0]
+              when '@'
+                focused_list = focused_list.by_context(args[1])
+              when '+'
+                focused_list = focused_list.by_project(args[1])
               end
             end
 
             prioritised_list = focused_list.by_priority('A')
             if prioritised_list.any?
-              puts prioritised_list.by_not_done.sample
+              puts prioritised_list.sample
             else
               if focused_list.any?
-                puts focused_list.by_not_done.sample
+                puts focused_list.sample
               else
                 puts "No tasks found."
               end
