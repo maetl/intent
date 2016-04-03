@@ -13,13 +13,13 @@ module Intent
             unless args[1].nil?
               case args[1][0]
               when '@'
-                filtered_list = filtered_list.by_context(args[1])
+                filtered_list = filtered_list.by_context(args[1]).by_not_done
               when '+'
                 filtered_list = filtered_list.by_project(args[1])
               end
             end
 
-            filtered_list.each do |task|
+            filtered_list.by_not_done.each do |task|
               puts task
             end
           when :focus
