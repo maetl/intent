@@ -44,6 +44,27 @@ module Intent
                 puts "No tasks found."
               end
             end
+          when :archive
+            archive_path = File.dirname(ENV['TODO_TXT'])
+            done_file = "#{archive_path}/__done__.txt"
+            todo_file = "#{archive_path}/__todo__.txt"
+
+            unless File.exists?(done_file)
+              puts "Creating new `done.txt` in #{archive_path}."
+              File.write(done_file, "")
+            end
+
+            File.open(done_file, "a") do |file|
+              list.by_done.each do |task|
+                file.puts(task)
+              end
+            end
+
+            File.open(todo_file, "w") do |file|
+              list.by_not_done.each do |task|
+                file.puts(task)
+              end
+            end
           end
         end
       end
@@ -53,7 +74,9 @@ module Intent
         puts
         puts "A set of tasks for managing a plain text todo list."
         puts
-        puts "todo list - list all items in the list"
+        puts "todo list     - list all items in the list"
+        puts "todo focus    - find focus by randomly selecting a task"
+        puts "todo archive  - archive completed tasks in the nearest `done.txt`"
       end
     end
   end
