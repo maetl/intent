@@ -54,8 +54,14 @@ module Intent
               File.write(done_file, "")
             end
 
-            File.open(done_file, "a") do |file|
-              list.by_done.each do |task|
+            done_list = ::Todo::List.new(done_file)
+
+            list.by_done.each do |task|
+              done_list.push(task)
+            end
+
+            File.open(done_file, "w") do |file|
+              done_list.sort!.by_done.each do |task|
                 file.puts(task)
               end
             end
