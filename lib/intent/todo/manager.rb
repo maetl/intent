@@ -1,12 +1,23 @@
 module Intent
   module Todo
+    Task = ::Todo::Task
+    List = ::Todo::List
+    Syntax = ::Todo::Syntax
+
     class Manager
+      include Syntax
+
       def self.run(args)
         if args.empty?
           print_help
         else
-          list = ::Todo::List.new(ENV['TODO_TXT'])
+          list = List.new(ENV['TODO_TXT'])
           case args.first.to_sym
+          when :add
+            print "add task: $ "
+            input = STDIN.readline.chop
+            list.unshift(Task.new("#{Date.today} #{input}")) if input
+            list.save!
           when :list
             filtered_list = list.by_not_done
 
@@ -80,9 +91,10 @@ module Intent
         puts
         puts "A set of tasks for managing a plain text todo list."
         puts
-        puts "todo list     - list all items in the list"
-        puts "todo focus    - find focus by randomly selecting a task"
-        puts "todo archive  - archive completed tasks in the nearest `done.txt`"
+        puts "todo list       - list all items in the list"
+        puts "todo add        - add a new task to the list"
+        puts "todo focus      - find focus by randomly selecting a task"
+        puts "todo archive    - archive completed tasks in the nearest `done.txt`"
       end
     end
   end
