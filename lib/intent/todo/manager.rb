@@ -18,6 +18,8 @@ module Intent
             input = STDIN.readline.chop
             list.unshift(Task.new("#{Date.today} #{input}")) if input
             list.save!
+          when :edit
+            exec("#{ENV['EDITOR']} #{ENV['TODO_TXT']}")
           when :list
             filtered_list = list.by_not_done
 
