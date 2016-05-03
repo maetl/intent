@@ -57,6 +57,10 @@ module Intent
                 puts "No tasks found."
               end
             end
+          when :projects
+            puts list.inject([]) { |p, t| p.concat t.projects }.uniq
+          when :contexts
+            puts list.inject([]) { |c, t| c.concat t.contexts }.uniq
           when :archive
             archive_path = File.dirname(ENV['TODO_TXT'])
             done_file = "#{archive_path}/__done__.txt"
@@ -96,6 +100,8 @@ module Intent
         puts "todo list       - list all items in the list"
         puts "todo add        - add a new task to the list"
         puts "todo focus      - find focus by randomly selecting a task"
+        puts "todo projects   - list all project tags in the list"
+        puts "todo contexts   - list all context tags in the list"
         puts "todo archive    - archive completed tasks in the nearest `done.txt`"
       end
     end
