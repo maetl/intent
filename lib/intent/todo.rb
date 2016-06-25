@@ -1,4 +1,5 @@
 require 'todo-txt'
+require 'pastel'
 require 'intent/todo/manager'
 
 Todo.customize do |options|

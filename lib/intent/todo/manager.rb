@@ -88,6 +88,45 @@ module Intent
                 file.puts(task)
               end
             end
+          when :status
+            pastel = Pastel.new
+            percentage = true
+
+            project_names = list.inject([]) { |names, task| names.concat(task.projects) }.uniq
+
+            projects = project_names.map do |project|
+              high_priority = list.by_not_done.by_project(project).by_priority('A').size
+              {
+                name: project,
+                done: list.by_done.by_project(project).size,
+                not_done: list.by_not_done.by_project(project).size - high_priority,
+                priority: high_priority
+              }
+            end
+
+            pad_to = project_names.max { |a,b| a.length <=> b.length }.length + 1
+            bar_to = (pad_to * 2).to_f
+
+            projects.each do |project|
+              total = project[:done] + project[:not_done] + project[:priority]
+
+              if percentage
+                done_ratio = bar_to / total * project[:done]
+                not_done_ratio = bar_to / total * project[:not_done]
+                priority_ratio = bar_to / total * project[:priority]
+              else
+                done_ratio = project[:done]
+                not_done_ratio = project[:not_done]
+                priority_ratio =  project[:priority]
+              end
+
+              print project[:name].ljust(pad_to), "|"
+
+              done_ratio.round.times { print pastel.green("█") }
+              not_done_ratio.round.times { print pastel.yellow("█") }
+              priority_ratio.floor.times { print pastel.red("█") }
+              print "\n"
+            end
           end
         end
       end
@@ -103,6 +142,7 @@ module Intent
         output.puts "todo projects   - list all project tags in the list"
         output.puts "todo contexts   - list all context tags in the list"
         output.puts "todo archive    - archive completed tasks in the nearest `done.txt`"
+        output.puts "todo status     - show completion status for all projects"
       end
     end
   end
