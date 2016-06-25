@@ -6,6 +6,6 @@ while File.symlink?(path)
 end
 $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
-require 'intent/todo'
+require 'intent'
 
 Intent::Todo::Manager.run(ARGV.dup)

@@ -1,1 +1,2 @@
-require "intent/version"
+require 'intent/todo'
+require 'intent/version'

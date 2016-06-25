@@ -1,0 +1,3 @@
+(A) The highest priority task
+A task that can only be done in @context
+A task without any particular focus +project
