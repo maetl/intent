@@ -58,9 +58,9 @@ module Intent
               end
             end
           when :projects
-            output.puts list.inject([]) { |p, t| p.concat t.projects }.uniq
+            output.puts list.by_not_done.inject([]) { |p, t| p.concat t.projects }.uniq
           when :contexts
-            output.puts list.inject([]) { |c, t| c.concat t.contexts }.uniq
+            output.puts list.by_not_done.inject([]) { |c, t| c.concat t.contexts }.uniq
           when :archive
             archive_path = File.dirname(ENV['TODO_TXT'])
             done_file = "#{archive_path}/__done__.txt"
