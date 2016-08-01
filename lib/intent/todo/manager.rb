@@ -63,12 +63,15 @@ module Intent
             output.puts list.by_not_done.inject([]) { |c, t| c.concat t.contexts }.uniq
           when :archive
             archive_path = File.dirname(ENV['TODO_TXT'])
-            done_file = "#{archive_path}/__done__.txt"
-            todo_file = "#{archive_path}/__todo__.txt"
+            todo_file = ENV['TODO_TXT']
+            done_file = "#{archive_path}/done.txt"
+            backup_file = "#{archive_path}/.todo.#{Date.today.iso8601}.txt"
+
+            FileUtils.copy(todo_file, backup_file)
 
             unless File.exists?(done_file)
               output.puts "Creating new `done.txt` in #{archive_path}."
-              File.write(done_file, "")
+              File.write(done_file, '')
             end
 
             done_list = ::Todo::List.new(done_file)
