@@ -95,7 +95,15 @@ module Intent
             pastel = Pastel.new
             percentage = true
 
-            project_names = list.inject([]) { |names, task| names.concat(task.projects) }.uniq
+            active_projects = File.read(ENV['PROJECTS_TXT']).lines.map(&:strip)
+
+            project_names = list.inject([]) do |names, task|
+              if (task.projects - active_projects) != task.projects
+                names.concat(task.projects)
+              else
+                names
+              end
+            end.uniq
 
             projects = project_names.map do |project|
               high_priority = list.by_not_done.by_project(project).by_priority('A').size
