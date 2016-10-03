@@ -1,6 +1,8 @@
 require 'todo-txt'
 require 'pastel'
 require 'fileutils'
+require 'logger'
+require 'git'
 require 'intent/todo/manager'
 
 Todo.customize do |options|

@@ -13,6 +13,13 @@ module Intent
         else
           list = List.new(ENV['TODO_TXT'])
           case args.first.to_sym
+          when :sync
+            todo_path = File.dirname(ENV['TODO_TXT'])
+            todo_file = File.basename(ENV['TODO_TXT'])
+            git = Git.open(todo_path, :log => Logger.new(STDOUT))
+            git.add(todo_file)
+            git.commit("Update todo list [#{Time.new}]")
+            git.push
           when :add
             output.print "add task: $ "
             input = STDIN.readline.chop
