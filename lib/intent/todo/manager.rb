@@ -145,6 +145,13 @@ module Intent
               priority_ratio.floor.times { print pastel.red("█") }
               print "\n"
             end
+          when :collect
+            output = `chrome-cli list links`
+            output.lines.each do |line|
+              input = line.split(" ").last
+              list.unshift(Task.new("#{Date.today} #{input} @reading")) if input
+              list.save!
+            end
           end
         end
       end
