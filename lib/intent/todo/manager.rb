@@ -161,6 +161,7 @@ module Intent
         output.puts "todo contexts   - list all context tags in the list"
         output.puts "todo archive    - archive completed tasks in the nearest `done.txt`"
         output.puts "todo status     - show completion status for all projects"
+        output.puts "todo sync       - synchronize local changes with remote git repo"
       end
     end
   end
