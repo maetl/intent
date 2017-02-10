@@ -169,6 +169,7 @@ module Intent
         output.puts "todo archive    - archive completed tasks in the nearest `done.txt`"
         output.puts "todo status     - show completion status for all projects"
         output.puts "todo sync       - synchronize local changes with remote git repo"
+        output.puts "todo collect    - collect open browser tabs as items for later reading"
       end
     end
   end
