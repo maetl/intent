@@ -42,7 +42,7 @@ module Intent
             filtered_list.by_not_done.each do |task|
               output.puts task
             end
-          when :focus
+          when :sample
             focused_list = list.by_not_done
 
             unless args[1].nil?
@@ -152,6 +152,31 @@ module Intent
               list.unshift(Task.new("#{Date.today} #{input} @reading")) if input
               list.save!
             end
+          when :focus
+            timer = if args[1].nil?
+               25 # default to pomodoro task length
+            else
+              args[1].to_i
+            end
+
+            blacklist = [
+              'mail.google.com',
+              'twitter.com',
+              'facebook.com',
+              'reddit.com',
+            ]
+
+            pid = fork do
+              sleep timer * 60
+              Ghost.store.empty
+              TerminalNotifier.notify('Focus block has ended')
+            end
+
+            blacklist.each do |hostname|
+              Ghost.store.add(Ghost::Host.new(hostname, '127.0.0.1'))
+            end
+
+            Process.detach pid
           end
         end
       end
@@ -163,13 +188,14 @@ module Intent
         output.puts
         output.puts "todo list       - list all items in the list"
         output.puts "todo add        - add a new task to the list"
-        output.puts "todo focus      - find focus by randomly selecting a task"
+        output.puts "todo sample     - randomly select a priority task"
         output.puts "todo projects   - list all project tags in the list"
         output.puts "todo contexts   - list all context tags in the list"
         output.puts "todo archive    - archive completed tasks in the nearest `done.txt`"
         output.puts "todo status     - show completion status for all projects"
         output.puts "todo sync       - synchronize local changes with remote git repo"
         output.puts "todo collect    - collect open browser tabs as items for later reading"
+        output.puts "todo focus      - block distractions and start focusing"
       end
     end
   end

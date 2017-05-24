@@ -21,6 +21,9 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "todo-txt", "~> 0.11"
   spec.add_runtime_dependency "pastel", "~> 0.6"
   spec.add_runtime_dependency "git", "~> 1.3.0"
+  spec.add_runtime_dependency "terminal-notifier", "~> 1.8.0"
+  spec.add_runtime_dependency "ghost", "~> 1.0.0"
+
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
