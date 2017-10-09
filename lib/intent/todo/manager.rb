@@ -72,9 +72,6 @@ module Intent
             archive_path = File.dirname(ENV['TODO_TXT'])
             todo_file = ENV['TODO_TXT']
             done_file = "#{archive_path}/done.txt"
-            backup_file = "#{archive_path}/.todo.#{Date.today.iso8601}.txt"
-
-            FileUtils.copy(todo_file, backup_file)
 
             unless File.exists?(done_file)
               output.puts "Creating new `done.txt` in #{archive_path}."
