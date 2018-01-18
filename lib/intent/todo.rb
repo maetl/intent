@@ -1,5 +1,6 @@
 require 'todo-txt'
 require 'pastel'
+require 'gem_ext/todo-txt'
 require 'fileutils'
 require 'logger'
 require 'git'
