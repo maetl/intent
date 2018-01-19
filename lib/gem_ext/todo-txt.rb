@@ -1,9 +1,9 @@
 # Monkeypatch `todo-txt-gem` to create ANSI decorated terminal output.
 class Todo::Task
-  def to_s
+  def to_s_highlighted
     pastel = Pastel.new
     if done?
-      pastel.strikethrough(super)
+      pastel.strikethrough(to_s)
     else
       print_open_task(pastel)
     end

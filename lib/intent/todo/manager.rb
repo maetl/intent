@@ -40,7 +40,7 @@ module Intent
             end
 
             filtered_list.by_not_done.each do |task|
-              output.puts task
+              output.puts task.to_s_highlighted
             end
           when :sample
             focused_list = list.by_not_done
@@ -56,10 +56,10 @@ module Intent
 
             prioritised_list = focused_list.by_priority('A')
             if prioritised_list.any?
-              output.puts prioritised_list.sample
+              output.puts prioritised_list.sample.to_s_highlighted
             else
               if focused_list.any?
-                output.puts focused_list.sample
+                output.puts focused_list.sample.to_s_highlighted
               else
                 output.puts "No tasks found."
               end
