@@ -18,6 +18,7 @@ module Intent
             todo_file = File.basename(ENV['TODO_TXT'])
             git = Git.open(todo_path, :log => Logger.new(STDOUT))
             git.add(todo_file)
+            git.add('done.txt')
             git.commit("Update todo list [#{Time.new}]")
             git.push
           when :add
