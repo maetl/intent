@@ -171,8 +171,11 @@ module Intent
             end
 
             blacklist.each do |hostname|
+              Ghost.store.add(Ghost::Host.new(hostname, '::1'))
               Ghost.store.add(Ghost::Host.new(hostname, '127.0.0.1'))
             end
+
+            system("osascript -e 'quit app \"Google Chrome\"'")
 
             Process.detach pid
           end
