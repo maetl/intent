@@ -1,0 +1,30 @@
+#!/usr/bin/env ruby
+require "tty-markdown"
+require "tty-pager"
+
+PROJECTS_PATH = File.dirname(ENV['TODO_TXT'])
+
+class ProjectDocCommand
+  def self.print_help(output)
+    output.puts "Pass in a project name to read its main document."
+    output.puts "Future iterations could display a list of available documents."
+    # Command idea: Add milestone to document
+  end
+
+  def self.run(args, output=STDOUT)
+    if args.empty?
+      print_help(output)
+    else
+      project_name = args.first.delete("^0–9a-z\-")
+      project_path = "#{PROJECTS_PATH}/#{project_name}"
+
+      if Dir.exists?(project_path)
+        pager = TTY::Pager.new
+        intent = File.read("#{project_path}/#{project_name}.md")
+        pager.page(TTY::Markdown.parse(intent))
+      end
+    end
+  end
+end
+
+ProjectDocCommand.run(ARGV.dup)
