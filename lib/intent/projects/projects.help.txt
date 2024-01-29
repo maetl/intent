@@ -1,5 +1,5 @@
-usage: project <task>
-       intent project <task>
+usage: projects <task>
+       intent projects <task>
 
 A set of tasks for managing a network of plain text projects.
 

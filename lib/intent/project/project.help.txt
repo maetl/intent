@@ -1,0 +1,7 @@
+usage: project <task>
+       intent project <task>
+
+Individual project tasks
+
+project init  - initializes a new project 
+project link  - links an existing project
