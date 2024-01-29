@@ -1,0 +1,9 @@
+usage: project <task>
+       intent project <task>
+
+A set of tasks for managing a network of plain text projects.
+
+projects status  - DEPRECATED parses tracked file status in local project directories
+projects active  - lists currently active projects
+projects focus   - initialise interactive focus navigator
+projects sync    - stores synchronised commit of current changes to projects

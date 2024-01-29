@@ -1,17 +1,127 @@
 module Intent
   module Review
-    class Manager
-      def self.run(args, output=STDOUT)
+    class Manager < Intent::CommandContext
+      def run(args, output=STDOUT)
         if args.empty?
-          print_help(output)
+          launch_ui_loop
         else
-          puts args
+          print_help(output)
         end
       end
 
-      def self.print_help(output)
-        output.puts "usage: review"
+      def launch_ui_loop
+        list = Todo::List.new(ENV['TODO_TXT'])
+
+        box = TTY::Box.frame(
+          width: TTY::Screen.width,
+          height: TTY::Screen.height-1,
+          align: :center,
+          border: :thick,
+          style: {
+            fg: :bright_yellow,
+            border: {
+              fg: :white,
+            }
+          }
+        )
+        
+        focus_index = 0
+        
+        def truncate(str, width)
+          return str unless str.length >= width
+        
+          "#{str.slice(0, width-3)}..."
+        end
+        
+        def draw_card(top, item, focus)
+        
+          style = unless top == focus
+            { fg: :white, border: { fg: :white } }
+          else
+            { fg: :bright_white, border: { fg: :bright_magenta, bg: :black } }
+          end
+        
+          title = if top == focus
+            {bottom_right: "[x: close][enter: launch]"}
+          else
+            {}
+          end
+        
+          #pastel = Pastel.new
+          width = 90
+        
+          TTY::Box.frame(width: width, height: 4, left: 4, title: title, border: :thick, style: style) do
+            "\s#{truncate(item[:title], 88)}\n\s#{truncate(item[:href], 88)}"
+          end
+        end
+        
+        items_per_page = (TTY::Screen.height-1) / 4
+        
+        items = list.by_not_done.by_context("@reading").slice(0, items_per_page).map do |item|
+          { title: item.text, href: item.text }
+        end
+        
+        $cursor = TTY::Cursor
+        print $cursor.hide
+        
+        def draw_list(items, focus)
+          buffer = []
+          items.each_with_index do |item, i|
+            buffer << draw_card(i, item, focus)
+          end
+          result = buffer.join("")
+        
+          print $cursor.clear_screen + $cursor.move_to(0,0)
+          print result
+        end
+        
+        draw_list(items, focus_index)
+        
+        reader = TTY::Reader.new(interrupt: :exit)
+        
+        reader.on(:keyctrl_x, :keyescape) do
+          print $cursor.clear_screen + $cursor.move_to(0,0)
+          print $cursor.show
+          exit
+        end
+        
+        reader.on(:keytab, :keydown) do
+          if focus_index == items.count - 1
+            focus_index = 0
+          else
+            focus_index += 1
+          end
+          draw_list(items, focus_index)
+        end
+        
+        reader.on(:keyup) do
+          if focus_index == 0
+            focus_index = items.count - 1
+          else
+            focus_index -= 1
+          end
+          draw_list(items, focus_index)
+        end
+        
+        reader.on(:keypress) do |key|
+          if key.value == "x"
+            items.delete_at(focus_index)
+            focus_index -= 1 if focus_index >= items.count
+            draw_list(items, focus_index)
+          end
+        end
+        
+        reader.on(:keyenter) do
+          `chrome-cli open #{items[focus_index][:href]}`
+        end
+        
+        loop do
+          reader.read_line(echo: false)
+        end
       end
     end
   end
 end
+
+
+

@@ -1,0 +1,15 @@
+usage: todo <task>
+       intent todo <task>
+
+A set of tasks for managing a plain text todo list.
+
+todo list      - list all items in the list
+todo add       - add a new task to the list
+todo sample    - randomly select a priority task"
+todo projects  - list all project tags in the list
+todo contexts  - list all context tags in the list
+todo archive   - archive completed tasks in the nearest `done.txt`
+todo status    - show completion status for all projects
+todo sync      - synchronize local changes with remote git repo
+todo collect   - collect open browser tabs as items for later reading
+todo focus     - block distractions and start focusing

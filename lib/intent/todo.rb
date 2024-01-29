@@ -6,6 +6,7 @@ require 'logger'
 require 'git'
 require 'terminal-notifier'
 require 'ghost'
+
 require 'intent/todo/manager'
 
 Todo.customize do |options|

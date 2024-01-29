@@ -183,20 +183,7 @@ module Intent
       end
 
       def self.print_help(output)
-        output.puts "usage: todo"
-        output.puts
-        output.puts "A set of tasks for managing a plain text todo list."
-        output.puts
-        output.puts "todo list       - list all items in the list"
-        output.puts "todo add        - add a new task to the list"
-        output.puts "todo sample     - randomly select a priority task"
-        output.puts "todo projects   - list all project tags in the list"
-        output.puts "todo contexts   - list all context tags in the list"
-        output.puts "todo archive    - archive completed tasks in the nearest `done.txt`"
-        output.puts "todo status     - show completion status for all projects"
-        output.puts "todo sync       - synchronize local changes with remote git repo"
-        output.puts "todo collect    - collect open browser tabs as items for later reading"
-        output.puts "todo focus      - block distractions and start focusing"
+        output.puts File.read('./todo.help.txt')
       end
     end
   end
