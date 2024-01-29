@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "git", "~> 1.19.1"
   spec.add_runtime_dependency "terminal-notifier", "~> 2.0"
   spec.add_runtime_dependency "ghost", "~> 1.0.0"
+  spec.add_runtime_dependency "unicode_plot", "0.0.5"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

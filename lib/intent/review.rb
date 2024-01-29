@@ -5,5 +5,6 @@ require 'tty-cursor'
 require 'tty-pager'
 require 'pastel'
 require 'todo-txt'
+require 'unicode_plot'
 
 require 'intent/review/manager'

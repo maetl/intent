@@ -3,10 +3,14 @@ module Intent
     class Manager < Intent::CommandContext
       def run(args, output=STDOUT)
         if args.empty?
-          launch_ui_loop
+          launch_densityplot
         else
           print_help(output)
         end
+      end
+
+      def launch_densityplot
+        UnicodePlot.barplot(data: {'calyx': 20, 'fictive': 50}, title: "Projects").render
       end
 
       def launch_ui_loop
