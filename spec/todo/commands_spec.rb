@@ -13,7 +13,7 @@ describe Intent::Todo do
   describe 'help' do
     it 'outputs help text when no command given' do
       output = StringIO.new
-      Intent::Todo::Manager.run([], output)
+      Intent::Todo::Commands.exec([], output)
 
       expect(output.string).to start_with('usage: todo')
     end
@@ -22,33 +22,38 @@ describe Intent::Todo do
   describe 'list' do
     it 'outputs the entire list when no args given' do
       output = StringIO.new
-      Intent::Todo::Manager.run([:list], output)
+      Intent::Todo::Commands.exec([:list], output)
 
       output.string.strip.tap do |out|
-        expect(out).to start_with('(A)')
-        expect(out).to end_with('+project')
+        result = Strings::ANSI.sanitize(out)
+        expect(result).to start_with('(A)')
+        expect(result).to end_with('+project')
       end
     end
 
     it 'filters the list by given project' do
       output = StringIO.new
-      Intent::Todo::Manager.run([:list, '+project'], output)
+      Intent::Todo::Commands.exec([:list, '+project'], output)
 
-      expect(output.string).to include('A task without any particular focus +project')
+      expect(output.string).to start_with('A task without any particular focus')
+      expect(output.string).to include('+project')
     end
 
     it 'filters the list by given context' do
       output = StringIO.new
-      Intent::Todo::Manager.run([:list, '@context'], output)
+      Intent::Todo::Commands.exec([:list, '@context'], output)
 
-      expect(output.string).to include('A task that can only be done in @context')
+      expect(output.string).to start_with('A task that can only be done in')
+      expect(output.string).to include('@context')
     end
   end
 
   describe 'focus' do
     it 'treats the highest priority task as focused by default' do
       output = StringIO.new
-      Intent::Todo::Manager.run([:focus], output)
+      Intent::Todo::Commands.exec([:focus], output)
+
+      p output.string
 
       expect(output.string.strip).to eq('(A) The highest priority task')
     end

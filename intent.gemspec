@@ -24,6 +24,10 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "terminal-notifier", "~> 2.0"
   spec.add_runtime_dependency "ghost", "~> 1.0.0"
   spec.add_runtime_dependency "unicode_plot", "0.0.5"
+  spec.add_runtime_dependency "kdl", "1.0.3"
+  spec.add_runtime_dependency "sorted_set", "1.0.3"
+  spec.add_runtime_dependency "strings-ansi", "0.2.0"
+  spec.add_runtime_dependency "bibtex-ruby", "6.1.0"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"

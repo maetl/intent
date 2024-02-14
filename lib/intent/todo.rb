@@ -5,9 +5,10 @@ require 'fileutils'
 require 'logger'
 require 'git'
 require 'terminal-notifier'
+require 'sorted_set'
 require 'ghost'
 
-require 'intent/todo/manager'
+require 'intent/todo/commands'
 
 Todo.customize do |options|
   options.require_completed_on = false

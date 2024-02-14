@@ -4,10 +4,10 @@ module Intent
     List = ::Todo::List
     Syntax = ::Todo::Syntax
 
-    class Manager
+    class Commands < Intent::CommandDispatcher
       include Syntax
 
-      def self.run(args, output=STDOUT)
+      def run(args, output=STDOUT)
         if args.empty?
           print_help(output)
         else

@@ -7,4 +7,4 @@ require 'pastel'
 require 'todo-txt'
 require 'unicode_plot'
 
-require 'intent/review/manager'
+require 'intent/review/commands'

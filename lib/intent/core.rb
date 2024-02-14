@@ -1,8 +1,8 @@
 module Intent
-  class CommandContext
-    def self.exec(args)
+  class CommandDispatcher
+    def self.exec(args, output=STDOUT)
       context = new
-      context.run(args)
+      context.run(args, output)
     end
 
     attr_reader :identity
@@ -18,7 +18,7 @@ module Intent
     private
 
     T_CLASS_PREFIX = 'Intent::'
-    T_CLASS_SUFFIX = '::Manager' # TODO: rename to context?
+    T_CLASS_SUFFIX = '::Commands'
 
     def strip_classname
       self.class.to_s.sub(T_CLASS_PREFIX, '').sub(T_CLASS_SUFFIX, '').downcase

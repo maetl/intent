@@ -9,4 +9,4 @@ $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'intent'
 
-Intent::Desktop::Manager.run(ARGV.dup)
+Intent::Desktop::Commands.exec(ARGV.dup)

@@ -1,6 +1,6 @@
 module Intent
   module Projects
-    class Manager < Intent::CommandContext
+    class Commands < Intent::CommandDispatcher
       def run(args, output=STDOUT)
         if args.empty?
           print_help(output)

@@ -1,3 +1,3 @@
 require 'pathname'
 
-require 'intent/desktop/manager'
+require 'intent/desktop/commands'
