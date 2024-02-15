@@ -1,5 +1,6 @@
 require 'todo-txt'
 require 'pastel'
+require 'tty-prompt'
 require 'gem_ext/todo-txt'
 
 Todo.customize do |options|

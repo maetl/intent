@@ -14,15 +14,20 @@ module Intent
             documents.projects.all.each do |task|
               output.puts task.highlight_as_project
             end
-          when :new
-            # TODO: replace with TTY::Readline
-            while project_name = Readline.readline('project name: ')
-              project_slug = project_name.gsub(/[\s]+/, '-').gsub('_', '-')
-              project = project_slug.starts_with?('+') ? project_slug : "+#{project_slug}"
-              output.puts project_id
-            end
+          when :add
+            add_project(args, output)
           end
         end
+      end
+
+      private
+
+      def add_project(args, output)
+        prompt = TTY::Prompt.new
+        name = prompt.ask('Project identifier: ')
+        name = name.downcase.gsub("_", "-").gsub(" ", "-").gsub(/[^0-9a-z\-]/i, '')
+        name = "+#{name}" unless name.start_with?('+')
+        output.puts name
       end
     end
   end
