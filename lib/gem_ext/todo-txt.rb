@@ -10,12 +10,32 @@ class Todo::Task
       # Completed tasks are rendered with a strikethrough
       pastel.strikethrough(to_s)
     else
-      # Open tasks delegate to the custom formatting function
-      print_open_task(pastel)
+      [
+        pastel.red(print_priority),
+        pastel.yellow(created_on.to_s),
+        text,
+        pastel.bold.magenta(print_contexts),
+        pastel.bold.blue(print_projects),
+        pastel.bold.cyan(print_tags)
+      ].reject { |item| !item || item.nil? || item.empty? }.join(' ')
     end
   end
 
+  def highlight_as_project
+    return to_s unless STDOUT.tty?
+
+    pastel = Pastel.new
+    [
+      pastel.bold.cyan(print_projects),
+      pastel.red(print_project_context)
+    ].reject { |item| !item || item.nil? || item.empty? }.join(' ')
+  end
+
   private
+
+  def print_project_context
+    'active' if contexts.include?('@active')
+  end
 
   def print_open_task(pastel)
     [
