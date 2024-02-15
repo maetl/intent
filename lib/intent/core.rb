@@ -53,13 +53,29 @@ module Intent
       end
     end
 
+    class Inbox
+      attr_reader :list
+
+      def initialize(db_path)
+        @list = List.new(db_path)
+      end
+
+      def add_line!(line)
+        record = Record.new("#{Date.today} #{line}")
+        @list.prepend(record)
+        @list.save!
+      end
+    end
+
     class Documents
       attr_reader :projects
       attr_reader :inventory
+      attr_reader :inbox
 
       def initialize
         @projects = Projects.new("#{Intent::Env.documents_dir}/projects.txt")
         @inventory = Inventory.new("#{Intent::Env.documents_dir}/inventory.txt")
+        @inbox = Inbox.new("#{Intent::Env.documents_dir}/todo.txt")
       end
     end
   end

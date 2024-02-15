@@ -1,7 +1,7 @@
 require 'intent/commands/base'
 require 'intent/commands/errors'
 require 'intent/commands/intent'
-#require 'intent/commands/todo'
+require 'intent/commands/todo'
 require 'intent/commands/projects'
 #require 'intent/commands/project'
 #require 'intent/commands/ideas'

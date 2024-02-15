@@ -8,4 +8,4 @@ $:.unshift(File.join(File.dirname(File.expand_path(path)), '..', 'lib'))
 
 require 'intent'
 
-Intent::Todo::Commands.exec(ARGV.dup)
+Intent::Dispatcher.exec_command(:todo, ARGV.dup)
