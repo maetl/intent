@@ -25,6 +25,12 @@ module Intent
             else
               raise "Noun not found"
             end
+          when :assign
+            noun = args[1].to_sym
+            case noun
+            when :folder then assign_folder(args, output)
+            when :box then assign_box(args, output)
+            end
           end
         end
       end
@@ -34,6 +40,14 @@ module Intent
       def inventory_units_of(type)
         documents.inventory.units_of(type).map do |unit|
           [unit.text, unit.tags[:sku]]
+        end.to_h
+      end
+
+      def inventory_unassigned_folders
+        folder_types = documents.inventory.units_of(:folder)
+        documents.inventory.unassigned_folders.map do |folder|
+          unit_label = folder_types.find { |f| f.tags[:sku] == folder.tags[:sku] } 
+          ["#{folder.text} #{folder.tags[:id]} (#{unit_label.text})", folder.tags[:id]]
         end.to_h
       end
 
@@ -90,6 +104,29 @@ module Intent
         # Alternative design
         # noun = create_noun(:box, label, tags)
         # Add.invoke(:append, documents.inventory, noun)
+      end
+
+      def assign_folder(args, output)
+        projects = documents.projects.all_tokens
+        folders = inventory_unassigned_folders
+        prompt = TTY::Prompt.new
+
+        folder_id = prompt.select('folder:', folders)
+        folder = documents.inventory.folder_by_id(folder_id)
+        
+        details = prompt.collect do
+          key(:project).select('project:', projects)
+          key(:label).ask('label:', default: folder.text)
+          # TODO: is active
+        end
+
+        folder.text = details[:label]
+        folder.projects << details[:project] # TODO: select multiple projects
+        documents.inventory.save!
+      end
+
+      def assign_box(args, output)
+
       end
     end
   end

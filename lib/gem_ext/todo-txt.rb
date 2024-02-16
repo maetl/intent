@@ -31,6 +31,10 @@ class Todo::Task
     ].reject { |item| !item || item.nil? || item.empty? }.join(' ')
   end
 
+  def text=(label)
+    @text = label
+  end
+
   private
 
   def print_project_context

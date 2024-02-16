@@ -46,6 +46,10 @@ module Intent
       def all
         list.by_not_done
       end
+
+      def all_tokens
+        all.map { |project| project.projects.first }
+      end
     end
 
     class Inventory
@@ -67,6 +71,18 @@ module Intent
           #noun = record.tags[:is].to_sym
           p record.tags
         end
+      end
+
+      def folder_by_id(id)
+        all.find { |i| i.tags[:is] == 'folder' && i.tags[:id] == id }
+      end
+
+      def folders
+        all.filter { |i| i.tags[:is] == 'folder' }
+      end
+
+      def unassigned_folders
+        all.filter { |i| i.tags[:is] == 'folder' && i.projects.empty? }
       end
 
       def units_of(noun)
@@ -91,6 +107,10 @@ module Intent
 
       def add_box!(description, id, sku)
         add_item!(description, id, :box, sku)
+      end
+
+      def save!
+        @list.save!
       end
     end
 
