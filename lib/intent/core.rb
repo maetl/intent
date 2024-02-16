@@ -21,6 +21,21 @@ module Intent
     List = ::Todo::List
     Record = ::Todo::Task
 
+    class Noun
+      def initialize(type, label, tags)
+        @type = type
+        @label = label
+        @props = lex_props(tags)
+        @tags = tags
+      end
+
+      private
+
+      def lex_props(tags)
+        p tags
+      end
+    end
+
     class Projects
       attr_reader :list
 
@@ -40,16 +55,42 @@ module Intent
         @list = List.new(db_path)
       end
 
-      def add_folder!(description, sku, archive_dates)
-        record = Record.new("#{Date.today} #{description} is:folder sku:#{sku}")
+      def all
+        list.by_not_done
+      end
+
+      def tree
+        folders = {}
+        boxes = []
+
+        all.each do |record|
+          #noun = record.tags[:is].to_sym
+          p record.tags
+        end
+      end
+
+      def units_of(noun)
+        all.filter { |i| i.tags[:is] == 'unit' && i.tags[:type] == noun.to_s }
+      end
+
+      def add_unit!(description, type, sku)
+        record = Record.new("#{Date.today} #{description} is:unit type:#{type} sku:#{sku}")
         @list.append(record)
         @list.save!
       end
 
-      def add_box!(description, sku)
-        record = Record.new("#{Date.today} #{description} is:box sku:#{sku}")
+      def add_item!(description, id, type, sku)
+        record = Record.new("#{Date.today} #{description} id:#{id} is:#{type} sku:#{sku}")
         @list.append(record)
         @list.save!
+      end
+
+      def add_folder!(description, id, sku)
+        add_item!(description, id, :folder, sku)
+      end
+
+      def add_box!(description, id, sku)
+        add_item!(description, id, :box, sku)
       end
     end
 
