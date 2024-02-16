@@ -63,16 +63,6 @@ module Intent
         list.by_not_done
       end
 
-      def tree
-        folders = {}
-        boxes = []
-
-        all.each do |record|
-          #noun = record.tags[:is].to_sym
-          p record.tags
-        end
-      end
-
       def folder_by_id(id)
         all.find { |i| i.tags[:is] == 'folder' && i.tags[:id] == id }
       end
@@ -81,8 +71,28 @@ module Intent
         all.filter { |i| i.tags[:is] == 'folder' }
       end
 
+      def items_in(id)
+        all.filter { |i| i.tags[:in] == id }
+      end
+
       def unassigned_folders
         all.filter { |i| i.tags[:is] == 'folder' && i.projects.empty? }
+      end
+
+      def assigned_folders
+        all.filter { |i| i.tags[:is] == 'folder' && i.projects.any? }
+      end
+
+      def boxes
+        all.filter { |i| i.tags[:is] == 'box' }
+      end
+
+      def unassigned_boxes
+        all.filter { |i| i.tags[:is] == 'box' && i.projects.empty? }
+      end
+
+      def assigned_boxes
+        all.filter { |i| i.tags[:is] == 'box' && i.projects.any? }
       end
 
       def units_of(noun)

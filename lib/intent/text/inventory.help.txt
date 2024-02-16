@@ -1,0 +1,6 @@
+usage: inventory <verb>
+
+Tools for managing a design archive and inventory ledger.
+
+inventory list       - list items in the inventory
+inventory add <noun> - add a new item to the inventory

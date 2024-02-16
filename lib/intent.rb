@@ -2,6 +2,8 @@
 require 'todo-txt'
 require 'pastel'
 require 'tty-prompt'
+require 'tty-table'
+require 'tty-tree'
 require 'nanoid'
 require 'gem_ext/todo-txt'
 

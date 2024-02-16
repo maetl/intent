@@ -30,6 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "bibtex-ruby", "6.1.0"
   spec.add_runtime_dependency "tty-prompt", "~> 0.23.1"
   spec.add_runtime_dependency "tty-table", "~> 0.12.0"
+  spec.add_runtime_dependency "tty-tree", "~> 0.4.0"
   spec.add_runtime_dependency "nanoid", "~> 2.0.0"
 
   spec.add_development_dependency "bundler"
