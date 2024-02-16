@@ -55,12 +55,14 @@ module Intent
         root
       end
 
+      # ui format reader
       def inventory_units_of(type)
         documents.inventory.units_of(type).map do |unit|
           [unit.text, unit.tags[:sku]]
         end.to_h
       end
 
+      # ui format reader
       def inventory_unassigned_folders
         folder_types = documents.inventory.units_of(:folder)
         documents.inventory.unassigned_folders.map do |folder|
@@ -69,6 +71,16 @@ module Intent
         end.to_h
       end
 
+      # ui format reader
+      def inventory_assigned_boxes
+        box_types = documents.inventory.units_of(:box)
+        documents.inventory.assigned_boxes.map do |box|
+          unit_label = box_types.find { |f| f.tags[:sku] == box.tags[:sku] } 
+          ["#{box.text} #{box.tags[:id]} (#{unit_label.text})", box.tags[:id]]
+        end.to_h
+      end
+
+      # ui format reader
       def inventory_unassigned_boxes
         box_types = documents.inventory.units_of(:box)
         documents.inventory.unassigned_boxes.map do |box|
@@ -98,6 +110,7 @@ module Intent
 
       def add_folder(args, output)
         skus = inventory_units_of(:folder)
+        projects = documents.projects.all_tokens
         prompt = TTY::Prompt.new
         ref = self
         
@@ -105,12 +118,35 @@ module Intent
           key(:sku).select('sku:', skus, filter: true)
           key(:id).ask('id:', default: ref.generate_id)
           key(:label).ask('label:', default: '[Unlabelled Folder]')
-          key(:active).yes?('is active:')
         end
-        
-        label = item[:active] ? "#{item[:label]} @active" : item[:label]
 
-        documents.inventory.add_folder!(label, item[:id], item[:sku])
+        should_assign_projects = prompt.yes?('assign to projects:')
+
+        if should_assign_projects
+          assigned_projects = prompt.multi_select('projects:', projects, filter: true)
+          label = "#{item[:label]} #{assigned_projects.join(' ')}"
+        else
+          label = item[:label]
+        end
+
+        should_file_in = prompt.select('file in:', {
+          "Active, not in box" => :active,
+          "Unassigned box" => :unassigned,
+          "Assigned project box" => :assigned
+        })
+
+        case should_file_in
+        when :active 
+          label << " @active"
+          in_box = nil
+        when :unassigned
+          in_box = prompt.select('box', inventory_unassigned_boxes)
+        when :assigned
+          # TODO: filter on selected projects only
+          in_box = prompt.select('box:', inventory_assigned_boxes)
+        end
+
+        documents.inventory.add_folder!(label, item[:id], item[:sku], in_box)
       end
 
       def add_box(args, output)
@@ -125,7 +161,7 @@ module Intent
         end
         
         # Repository write pattern
-        documents.inventory.add_box!(label, item[:id], item[:sku])
+        documents.inventory.add_box!(item[:label], item[:id], item[:sku])
 
         # Alternative design
         # noun = create_noun(:box, label, tags)

@@ -105,14 +105,15 @@ module Intent
         @list.save!
       end
 
-      def add_item!(description, id, type, sku)
+      def add_item!(description, id, type, sku, box=nil)
+        description << " in:#{box}" unless box.nil?
         record = Record.new("#{Date.today} #{description} id:#{id} is:#{type} sku:#{sku}")
         @list.append(record)
         @list.save!
       end
 
-      def add_folder!(description, id, sku)
-        add_item!(description, id, :folder, sku)
+      def add_folder!(description, id, sku, box=nil)
+        add_item!(description, id, :folder, sku, box)
       end
 
       def add_box!(description, id, sku)
