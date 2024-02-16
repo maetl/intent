@@ -1,11 +1,22 @@
 #require 'random'
-require 'todo-txt'
+
+# Pastel still required but deprecated
 require 'pastel'
 require 'paint'
+
+
 require 'tty-prompt'
 require 'tty-table'
 require 'tty-tree'
+
+# Identifiers
 require 'nanoid'
+#require 'calyx'
+
+require 'logger'
+require 'git'
+
+require 'todo-txt'
 require 'gem_ext/todo-txt'
 
 Todo.customize do |options|

@@ -14,8 +14,10 @@ module Intent
             documents.projects.all.each do |task|
               output.puts task.highlight_as_project
             end
-          when :add
-            add_project(args, output)
+          when :add then add_project(args, output)
+          when :sync then sync_project(args, output)
+          else
+            raise Errors:COMMAND_NOT_FOUND
           end
         end
       end
@@ -28,6 +30,11 @@ module Intent
         name = name.downcase.gsub("_", "-").gsub(" ", "-").gsub(/[^0-9a-z\-]/i, '')
         name = "+#{name}" unless name.start_with?('+')
         output.puts name
+      end
+
+      def sync_project(args, output)
+        result = documents.projects.sync!
+        output.puts "Sync projects result: #{result}"
       end
     end
   end

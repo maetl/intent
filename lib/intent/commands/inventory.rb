@@ -1,5 +1,3 @@
-require 'tty-reader'
-
 module Intent
   module Commands
     class Inventory < Base
@@ -28,6 +26,12 @@ module Intent
             when :folder then assign_folder(args, output)
             when :box then assign_box(args, output)
             end
+            # CONCEPT:
+            # Verbs::Assign.invoke_rewrite()
+            # verbs.assign.invoke_rewrite(documents.inventory, noun)
+          when :sync then sync_inventory(args, output)
+          else
+            raise Errors:COMMAND_NOT_FOUND
           end
         end
       end
@@ -204,6 +208,11 @@ module Intent
         box.text = details[:label]
         box.projects.concat(details[:projects])
         documents.inventory.save!
+      end
+
+      def sync_inventory(args, output)
+        result = documents.inventory.sync!
+        output.puts "Sync inventory result: #{result}"
       end
     end
   end
