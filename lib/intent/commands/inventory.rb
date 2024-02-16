@@ -35,7 +35,7 @@ module Intent
       private
 
       def inventory_tree
-        pastel = Pastel.new
+        color = ::Intent::UI::TermColor.new
         root = {}
         documents.inventory.boxes.each do |box|
           color_code = case box.tags[:id][0].downcase.to_sym
@@ -46,9 +46,9 @@ module Intent
           else
             :white
           end
-          box_key = "#{pastel.decorate(box.tags[:id], :bold, color_code)} #{box.text}"
+          box_key = "#{color.bold.decorate(box.tags[:id], color_code)} #{box.text}"
           child_items = documents.inventory.items_in(box.tags[:id]).map do |item|
-            "#{pastel.decorate(item.tags[:id], :bold, color_code)} #{item.text}"
+            "#{color.bold.decorate(item.tags[:id], color_code)} #{item.text}"
           end
           root[box_key] = child_items
         end

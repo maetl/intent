@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency "tty-table", "~> 0.12.0"
   spec.add_runtime_dependency "tty-tree", "~> 0.4.0"
   spec.add_runtime_dependency "nanoid", "~> 2.0.0"
+  spec.add_runtime_dependency "paint", "~> 2.3.0"
 
   spec.add_development_dependency "bundler"
   spec.add_development_dependency "rake"
