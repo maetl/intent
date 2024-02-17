@@ -49,6 +49,10 @@ module Intent
         all.filter { |i| i.tags[:is] == 'unit' && i.tags[:type] == noun.to_s }
       end
 
+      def local_computer_id
+        all.find { |i| i.tags[:is] == 'computer' && i.tags[:serial] == Env.computer_serial }.tags[:id]
+      end
+
       def add_unit!(description, type, sku)
         record = Record.new("#{Date.today} #{description} is:unit type:#{type} sku:#{sku}")
         @list.append(record)

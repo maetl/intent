@@ -34,6 +34,20 @@ module Intent
         end
       end
 
+      def add_directory!(path, project, id, computer)
+        record = Record.new([
+          Date.today,
+          path,
+          project,
+          "is:directory",
+          "id:#{id}",
+          "computer:#{computer}"
+        ].join(' '))
+
+        @list.append(record)
+        @list.save!
+      end
+
       private
 
       def repo
