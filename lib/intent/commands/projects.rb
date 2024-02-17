@@ -1,5 +1,3 @@
-require 'readline'
-
 module Intent
   module Commands
     class Projects < Base

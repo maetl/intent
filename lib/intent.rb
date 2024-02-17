@@ -24,11 +24,8 @@ Todo.customize do |options|
 end
 
 require 'intent/version'
+require 'intent/env'
 require 'intent/core'
 require 'intent/commands'
 require 'intent/ui/term_color'
-# require 'intent/todo'
-# require 'intent/review'
-# require 'intent/projects'
-# require 'intent/desktop'
-
+require 'intent/dispatcher'
