@@ -1,0 +1,82 @@
+====================================================================
+Intent . Havin a blast on the command line
+====================================================================
+
+Welcome to the only task manager you will (n)ever need.
+
+These docs are not written for a wide audience, but here’s the
+essentials:
+
+Verbs
+-----
+
+### `add [noun]`
+
+Adds [noun] to the ledger denoted by the given command.
+
+```
+projects add
+projects add project
+projects add directory
+projects add repository
+
+project add
+
+inventory add
+inventory add folder
+inventory add box
+inventory add unit
+inventory add computer
+
+todo add
+
+inbox add
+```
+
+### `assign [noun]`
+
+Assigns projects, contexts, tags and associations to ap.
+
+```
+projects assign
+
+project assign
+
+inventory assign
+```
+
+### `list [noun]`
+
+Lists elements in the ledger.
+
+```
+projects list
+
+project list
+
+inventory list
+
+todo list
+
+inbox list
+```
+
+### `link [noun]`
+
+Links elements from a local directory to an assigned project.
+
+```
+project link
+```
+
+### `sync [noun]`
+
+Synchronises changes to the Git origin.
+
+```
+projects sync
+
+inventory sync
+```
+
+Documentation is patchy and not always up to date.
